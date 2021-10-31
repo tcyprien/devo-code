@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "..\\..\\seasons"
+		}
+	],
+	"settings": {
+		"editor.fontSize": 16
+	}
+}

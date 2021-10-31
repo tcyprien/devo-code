@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <P></P>
+    <h1></h1>
+    <div></div>
+    <div class="container"></div>
+    <div id="el"></div>
+    <div class="mara"></div>
+    <h1 class="palabre"></h1>
+    <ul>
+        <li> => </li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</body>
+</html>
+---------------------------------------------------------
+#This is just for test
+
+pipeline {
+    agent any
+    tools {
+       maven 'M2_HOME'
+    }
+    environment {
+      registry = "kserge2001/devop-pipeline"
+      registryCredential = 'dockerUserID'
+    }
+    stages {
+      stage('Build'){
+        steps {
+         sh 'mvn clean'
+         sh 'mvn install'
+         sh 'mvn package'
+        }
+      }
+      stage('test'){
+        steps {
+         echo "test step"
+         sh 'mvn test'
+        }
+      }
+      stage('Deploy'){
+        steps {
+         script {
+          docker.build registry + ":$BUILD_NUMBER"
+         }
+         }
+        }
+        stage('Push Image') {
+        steps{
+          script {
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
+      }
+    }
+  }
+   }
+  }
+  
